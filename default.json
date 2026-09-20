@@ -7,6 +7,7 @@
   ],
   "timezone": "UTC",
   "schedule": ["before 3am on Monday"],
+  "dependencyDashboardLabels": ["stays-open"],
   "packageRules": [
     {
       "description": "Group patch and digest updates together",
