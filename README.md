@@ -33,23 +33,9 @@ Repo with a PR-triggered CI check:
 
 ## Public scrub
 
-Every repo this account owns is public, so planning notes, runbooks, local paths and links
-to private repos must stay out of them. `scripts/check-public-scrub.mjs` fails a repo that
-tracks:
-
-- a file whose name contains `roadmap` in any case, or starts with `PASS-`, `SUBMISSION` or
-  `PR-COMMENT`;
-- a line that links to a roadmap Markdown file, names a `<word>-hq` store, or holds a local
-  home or workspace path;
-- a GitHub link or an `owner/repo#N` reference whose owner is not in `publicOwners` in
-  `public-scrub.json`. Lockfiles are exempt from this rule only, because they list every
-  dependency's publisher;
-- a file named in `agentFiles` in `public-scrub.json` that differs from the copy in this
-  repo. The list is empty here.
-
-`vendor/` and `node_modules/` are skipped. The patterns are generic and the output names
-only the file, line and rule, never the matched text: a public repo's CI log is public too,
-so the check must not publish what it guards.
+`scripts/check-public-scrub.mjs` checks the files a repo tracks against the rules in the
+script and in `public-scrub.json`, and skips `vendor/` and `node_modules/`. A failure names
+the file, line and rule.
 
 Where it runs:
 
