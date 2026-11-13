@@ -27,6 +27,6 @@
   ],
   "vulnerabilityAlerts": {
     "labels": ["security"],
-    "assignees": ["tobias-dev"]
+    "assignees": ["polydoc-tech"]
   }
 }
