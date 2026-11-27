@@ -68,10 +68,12 @@ stays green on its old pin, and the `content` job in this repo's CI, which check
 against the current commit, names it.
 
 A change to `AGENTS.md` or `CLAUDE.md` merges here last. The `content` job here is a required
-check, and it fails while any repo holds an older copy. So first, each other repo takes the new
-copy in a pull request that pins its guard to the head commit of the pull request here. Once
-those have merged, re-run `content` here and merge. Renovate then moves each pin to the squash
-commit on `main`.
+check, and it fails when any repo's copy differs from the copy at the commit it runs on. So
+first, each other repo takes the new copy in a pull request that pins its guard to the head
+commit of the pull request here. Once those have merged, re-run `content` here and merge
+straight away: until then `content` fails on `main` and on every other pull request here.
+Keep the branch until Renovate has moved every pin to the squash commit on `main`, because a
+pin to a commit on no branch fails zizmor's `impostor-commit` audit in the `workflows` job.
 
 ### Public scrub
 
