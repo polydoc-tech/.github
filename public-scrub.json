@@ -1,4 +1,4 @@
 {
-  "publicOwners": ["microsoft", "polydoc-tech"],
+  "publicOwners": ["gitleaks", "microsoft", "polydoc-tech", "rhysd"],
   "agentFiles": []
 }
