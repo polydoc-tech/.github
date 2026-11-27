@@ -92,9 +92,3 @@ jobs:
   # Proves the workflow other repos call, on this repo, before any of them pins it.
   guard:
     uses: ./.github/workflows/guard.yml
-
-  # The older caller workflow, until every repo calls guard.yml instead.
-  public-scrub-caller:
-    uses: ./.github/workflows/public-scrub.yml
-    with:
-      source-ref: ${{ github.event.pull_request.head.sha || github.sha }}

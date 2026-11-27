@@ -5,11 +5,15 @@ policy, and two Renovate presets.
 
 ## Files every repo shares
 
-- `AGENTS.md`: the agent rules. Every repo carries a byte-identical copy. To change them, edit
-  this copy and copy it over the others in the same pass.
+- `AGENTS.md`: the agent rules.
 - `CLAUDE.md`: imports `AGENTS.md`.
 - `SECURITY.md`: GitHub shows it as the default security policy of every repo of the account
   that has none of its own.
+
+Every repo carries a byte-identical copy of `AGENTS.md` and `CLAUDE.md`. The public scrub
+fails a repo whose copy is missing or differs from the copy at the commit its guard pins;
+`agentFiles` in `public-scrub.json` names the two files. A change to either one follows the
+order under "A change here, and the repos that pin it".
 
 ## Guard
 
@@ -63,6 +67,14 @@ time, and goes green only once the repo passes it or lists its exceptions. Until
 stays green on its old pin, and the `content` job in this repo's CI, which checks every repo
 against the current commit, names it.
 
+A change to `AGENTS.md` or `CLAUDE.md` merges here last. The `content` job here is a required
+check, and it fails when any repo's copy differs from the copy at the commit it runs on. So
+first, each other repo takes the new copy in a pull request that pins its guard to the head
+commit of the pull request here. Once those have merged, re-run `content` here and merge
+straight away: until then `content` fails on `main` and on every other pull request here.
+Keep the branch until Renovate has moved every pin to the squash commit on `main`, because a
+pin to a commit on no branch fails zizmor's `impostor-commit` audit in the `workflows` job.
+
 ### Public scrub
 
 `scripts/check-public-scrub.mjs` checks the files a repo tracks against the rules in the
@@ -73,9 +85,6 @@ A new link to a public account that fails the check goes into `publicOwners`, an
 that needs it moves its guard pin to that commit. Locally:
 `node scripts/check-public-scrub.mjs ../<repo> ...` and
 `node --test scripts/check-public-scrub.test.mjs`.
-
-`.github/workflows/public-scrub.yml` is the older reusable workflow that runs only the scrub,
-read from `main`. It stays until every repo calls `guard.yml` instead.
 
 ### Hidden characters
 
